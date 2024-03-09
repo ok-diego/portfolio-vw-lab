@@ -1,5 +1,76 @@
 import "./assets/css/style.css";
 
+// DOM elements
+// const $slider_ctn = document.getElementsByClassName("slider__ctn");
+// const $slider_elements = $slider_ctn[0].querySelectorAll("div");
+// const $slider_button = document.getElementsByClassName("slider__btn");
+// const $left_image = document.querySelector(".revealing__left img");
+// const rect = $slider_ctn[0].getBoundingClientRect();
+// const viewportWidth = window.innerWidth;
+
+// /* _________________________ iamge slider _________________________  */
+// /* _________________________ iamge slider _________________________  */
+// /* _________________________ iamge slider _________________________  */
+
+// set left image initial clip-path property
+$left_image.style.clipPath = `inset(0% ${viewportWidth}px 0% 0%)`;
+
+console.log($slider_ctn);
+console.log(rect);
+// console.log(viewportWidth);
+
+for (let i = 0; i < $slider_elements.length; i++) {
+  // $slider_elements[i].style.opacity = "0.5";
+}
+
+$slider_ctn[0].onmousedown = (event) => {
+  let shiftX = event.clientX - $slider_ctn[0].getBoundingClientRect().left;
+  // let shiftY = event.clientY - $slider_ctn[0].getBoundingClientRect().top;
+  console.log(event.clientX);
+  // document.body.append($slider_ctn[0]);
+
+  moveAt(event.pageX);
+
+  // moves the button at (pageX, pageY) coordinates
+  // taking initial shifts into account
+  function moveAt(pageX, pageY) {
+    $slider_ctn[0].style.left = pageX - shiftX + "px";
+    // $slider_ctn[0].style.top = pageY - shiftY + "px";
+  }
+
+  // reveal left image
+  const revealImage = (x) => {
+    if (x > viewportWidth) {
+      $left_image.style.clipPath = `inset(0% ${x}px 0% 0%)`;
+    }
+    if (x < viewportWidth) {
+      $left_image.style.clipPath = `inset(0% 0% 0% ${x}px)`;
+    }
+  };
+
+  const onMouseMove = (event) => {
+    console.log(event.pageX);
+    moveAt(event.pageX);
+    revealImage(event.pageX);
+  };
+
+  // move the button on mousemove
+  // document.addEventListener("mousemove", onMouseMove);
+  $slider_ctn[0].addEventListener("mousemove", onMouseMove);
+
+  // drop the button, remove unneeded handlers
+  $slider_ctn[0].onmouseup = () => {
+    // document.removeEventListener("mousemove", onMouseMove);
+    $slider_ctn[0].removeEventListener("mousemove", onMouseMove);
+    $slider_ctn[0].onmouseup = null;
+  };
+};
+
+// remove browser's default drag n drop support
+$slider_ctn[0].ondragstart = () => {
+  return false;
+};
+
 /* _________________________ cursor _________________________  */
 /* _________________________ cursor _________________________  */
 /* _________________________ cursor _________________________  */
